@@ -5,13 +5,10 @@ import Home from '../Components/Home'
 
 const Routes = () => {
   return (
-    <div>
     <Router>
-
         <Route path='/'  element= { < Home />} />
         <Route path='/detailspage'  element= { < DetailsPage />} />
     </Router>
-    </div>
   )
 }
 

@@ -1,18 +1,14 @@
 import React from 'react'
-import Styles from "../Styles/Search.module.css"
-import { Movie_Search, SingleMovie } from '../Redux/Action/Action'
-import { useDispatch, useSelector } from 'react-redux'
+
+import { Movie_Search, Toggle_Search } from '../Redux/Action/Action'
+import { useDispatch } from 'react-redux'
 import { useCallback } from 'react'
-import { useState } from 'react'
-import{Link} from "react-router-dom"
+
 
 
 const SearchBar = () => {
-    const [initSearch, setInitSearch] = useState(false)
     const dispatch = useDispatch()
-    const movies = useSelector((store)=>store.movies.movie)
-    const [values, setValue] = useState("")
-    console.log('movies', movies);
+
     function debouncing(argument) {
         let timer
         return function (...args) {
@@ -20,18 +16,14 @@ const SearchBar = () => {
             timer = setTimeout(function () {
                 timer = null
                 argument.apply(this, args)
-            }, 1000)
+            }, 300)
         }
     }
-    const handleSubmit = async () => {
-        dispatch(Movie_Search(values))
 
-    }
     const handleChange = (e) => {
         const { value } = e.target
-        setValue(value)
         dispatch(Movie_Search(value))
-        value === ''? setInitSearch(false) : setInitSearch(true)
+        !value  ? dispatch(Toggle_Search(false)) : dispatch(Toggle_Search(true))
 
     }
     const deb = useCallback(debouncing(handleChange))
@@ -39,39 +31,11 @@ const SearchBar = () => {
    
     
     return (
-        <div className={Styles.SearchContainer}>
-            <input type="text" onChange={deb} className={Styles.SearchBox} />
-            <button className={Styles.SearchIcone} onClick={handleSubmit}><i className={Styles.SearchIcone} class="fa-solid fa-magnifying-glass"></i></button>
-            <br />
-            <div className={Styles.Movie}>
-        
-                {
-                   movies &&  movies.map((ele)=>{
-                    return (
-                       <Link to={"/detailspage"}>
-                       
-                       <button className={Styles.MovieBox} onClick={()=>dispatch(SingleMovie(ele))}>
-                            <div className={Styles.Movies_Contents}> <img src={ele.Poster} className={Styles.Movies_Contents_Img}alt="" /></div>
-                            <div className={Styles.Movies_Contents} > {ele.Title}</div>
-                            <div className={Styles.Movies_Contents} > {ele.Type}</div>
-                            <div className={Styles.Movies_Contents} > {ele.Year}</div>
-                       </button>
-                       
-                       </Link>
-                    )
-                })
-
-                
-                }
-              
-                {
-                    !initSearch && <><div   className={Styles.MovieBoxError}>Please Search a movie by name </div></>
-                }
-                {
-                     !movies && initSearch && <><div   className={Styles.MovieBoxError}>Movie Not Available 404 </div></>
-                }
-            </div>
+        <div className='search-container'>
+            <input type="text" onChange={deb} placeholder="Enter a movie name" />
         </div>
     )
 }
 export default SearchBar
+
+

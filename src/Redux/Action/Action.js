@@ -18,6 +18,12 @@ export const Movie_Search = (movie) => async (dispatch) => {
   }
 }
 
+export const Toggle_Search = (initSearch)=> {
+
+return {
+  type : "TOGGLE", payload : initSearch
+}
+}
 
 
 export const SingleMovie = (singleData) => (dispatch) => {

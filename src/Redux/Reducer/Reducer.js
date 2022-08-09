@@ -3,6 +3,7 @@ const initState = {
   loading: false,
   failure: false,
   succcess: false,
+  toggle: false,
   movie: [],
   single : {}
 }
@@ -14,6 +15,8 @@ console.log('payload', payload);
       return { ...store, movie: payload }
     case SINGLE_MOVIE:
       return { ...store, single: payload }
+    case 'TOGGLE':
+      return { ...store, toggle: payload }
     case LOADING:
       return { ...store, loading: true }
     case SUCCESS:
